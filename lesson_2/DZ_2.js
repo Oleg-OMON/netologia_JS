@@ -39,6 +39,7 @@ function productsAll(){
                 console.log(`Общая сумма товара "${pr.name}" на сумму: ${priceResult}`); 
             }  
         }
+       return console.log(totalResult);
 }
 
 
@@ -54,4 +55,4 @@ productsAll();
 // console.log(baskets);
 
 
-console.log(totalResult);
+// console.log(totalResult);
