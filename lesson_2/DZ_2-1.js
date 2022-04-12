@@ -1,5 +1,5 @@
 
-function nextPrime_num(num){
+function nextPrime(num){
     for (let i = 2; i <= num; i++){
         if (num % i === 0){
             console.log(i);
@@ -7,4 +7,4 @@ function nextPrime_num(num){
     }
 }
 
-nextPrime_num(process.argv[2]);
+nextPrime(process.argv[2]);
