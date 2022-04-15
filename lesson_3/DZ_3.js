@@ -18,14 +18,16 @@ class Good {
 //GoodsList - класс для хранения каталога товаров со свойствами
 class Goodlist {
     constructor (products=[]){
+        regexp = /w/g;
         this.goods = products.forEach(element => {
             return [element];
         });
-        this.filter = '';
-        this.sortDir = products.filter(element.price=True=>{
+        this.filter = regexp;
+        
+        this.sortPrice = products.filter(element.price=True=>{
             return element;
         });
-        this.sortPrice = sortPrice;
+        this.sortDir = sortDir;
     }
 
     newProduct(id,name,description,sizes,price,available){
@@ -35,7 +37,10 @@ class Goodlist {
     }
 
     getlist(){}
-    add(){}
+    
+    add(){
+        this.Good.push(Goodlist);
+    }
     remove(id){}
 }
 
@@ -46,6 +51,8 @@ class BasketGood extends Good{
     this.amount = id;
     }
 }
+
+//Basket - класс для хранения данных о корзине товаров со свойствами
 class Basket{
     constructor(goods){
         this.goods = '';
