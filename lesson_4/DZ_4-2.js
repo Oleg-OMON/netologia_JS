@@ -1,48 +1,78 @@
-"use strict";
 const readline = require('readline');
 const { stdin: input, stdout: output } = require('process');
 const fs = require('fs');
-let  rl = readline.createInterface({ input, output });
 
-let random_choise  = Math.floor(Math.random() * 10);
-let user_choise = rl.question('Введите число?', (input));
+const rl = readline.createInterface({ input, output });
 
+let gameState = {
+    tryingCounter: 0,
+    userNumber: NaN,
+    minValue: 0,
+    maxValue: 1000,
+    randomNumber: Math.floor(Math.random() * 1000),
+}
 
-function choise_game(){
-    let attempts = 3;
-    let end_attempts = 0;
-        while (attempts = 0) {
-            user_choise = rl.question('Введите число?', '');
-            if(isNaN(user_choise)){
-                console.log('Введите число');
-            }
-            else if(user_choise == random_choise){
-                console.log('победа');
-                }
-            else if(user_choise > random_choise){
-                console.log('Ваше число больше');
-                }
-             else {
-                console.log('Выше число меньше'); 
-                }
-                attempts--;
-                end_attempts++;
+function log(filePath) {
+    //очистить файл если уже был
+    if(filePath) {
+        fs.writeFileSync(filePath, "", "utf-8"); 
+    }
 
-                let data = {
-                     user_attempts: attempts,
-                     user_endAttempts: end_attempts,
-                     user_number: user_choise,
-                     random_number: random_choise,
-                 };
+    return function out(string) {
+        if(filePath) {
+            fs.appendFile(filePath, string, "utf-8", (err) => {
+                if(err) {
+                    console.log("Ошибка открытыия файла\n");
+                } 
+            })
+                      
+        }
+        console.log(string);
+    }
+}
 
-                fs.writeFile('newData.json', data, 'utf-8', (err) => {
-                    if (err) 
-                    { console.log('Ошибка записи файла!')}; 
-                    
-                console.log(`Использовано ${attempts} попыток \n Осталось ${end_attempts} попыток`);}
-                );
-            }
+function question(logger) {
+    rl.question('введите число или exit ', (input) => {
+        if(input.toLowerCase() === "exit") {
+            rl.close();
+            return;
+        }
+    
+        let number = parseInt(input);
+    
+        if(isNaN(number) || (number < gameState.minValue || number > gameState.maxValue)) {
+            logger(`Вы ввели число не в интервале ${gameState.minValue}-${gameState.maxValue}. Повторите попытку\n`);
+            rl.pause();
+            question(logger);
+        }
+
+        logger(`Ваше число: ${number}\n`)
+
+        gameState.tryingCounter++;
+    
+        gameState.userNumber = number;
+    
+        if(number === gameState.randomNumber) {
+            logger(`Вы угадали!!!! за ${gameState.tryingCounter} попыток\n`);
+            rl.close();
+            return;
+        }
+    
+        if(number > gameState.randomNumber) {
+            logger("Нужно число меньше\n");
+        } else {
+            logger("Нужно число больше\n");
+        }
+    
+        rl.pause();
+        question(logger)
+    });
 }
 
 
-choise_game();
+function main() {
+    let logger = log("./protocol");
+    question(logger);
+}
+
+main();

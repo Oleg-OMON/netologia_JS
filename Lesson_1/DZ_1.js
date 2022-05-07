@@ -1,5 +1,5 @@
 "use strict";
-let random_choise  = 2;
+let random_choise  = Math.floor(Math.random() * 100);
 let user_choise = +prompt('Введите число?','');
 
 
@@ -7,7 +7,7 @@ function choise_game(){
         while (user_choise !== random_choise) {
             user_choise = +prompt('Введите число?', '');
             if(isNaN(user_choise)){
-                alert('Введиет число');
+                alert('Введите число');
             }
             else if(user_choise == random_choise){
                 console.log('победа');
@@ -20,8 +20,6 @@ function choise_game(){
                 }   
             }  
 }
-
-
 
 
 choise_game();
